@@ -1,0 +1,17 @@
+.App{
+    color: black;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    
+}
+.bgImg{
+    width: 100%;
+    background-image: url("./assets/bg.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+::-webkit-scrollbar {
+    display: none;
+}
