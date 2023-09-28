@@ -21,10 +21,16 @@ import ProfileModal from "./misc/ProfileModal";
 import UpdateGroupChatModal from "./misc/UpdateGroupChatModal";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:3001";
+let socket, selectedChatCompare;
+
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const { user, selectedChat, setSelectedChat } = ChatState();
   const toast = useToast();
@@ -44,7 +50,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       );
       setMessages(data);
       setLoading(false);
-      console.log(messages);
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occured ",
@@ -75,7 +81,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
+        // console.log(data);
+        socket.emit("new message", data);
         setMessages((prevMessages) => [...prevMessages, data]);
         // console.log(messages);
       } catch (error) {
@@ -92,15 +99,31 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-
     // { typing Indicator } logic will be added later
   };
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => setSocketConnected(true));
+  }, []);
 
   useEffect(() => {
     fetchMessages();
+    selectedChatCompare = selectedChat;
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
-
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        // give notification
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
   return (
     <>
       {selectedChat ? (
