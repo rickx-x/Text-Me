@@ -125,6 +125,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket.on("connected", () => setSocketConnected(true));
     socket.on("typing", () => setisTyping(true));
     socket.on("stop typing", () => setisTyping(false));
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -228,7 +229,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </div>
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-              {isTyping ? <div>typing...</div> : <></>}
+              {isTyping ? (
+                <div>
+                  {" "}
+                  <b>typing...</b>{" "}
+                </div>
+              ) : (
+                <></>
+              )}
               <InputGroup>
                 <Input
                   variant="filled"
