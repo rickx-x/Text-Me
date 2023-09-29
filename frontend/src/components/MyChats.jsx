@@ -111,15 +111,40 @@ const MyChats = ({ fetchAgain }) => {
                       <WrapItem>
                         <i className="bx-lg bx bxs-group"></i>
                       </WrapItem>
-                      <WrapItem>{chat.chatName}</WrapItem>
+                      <WrapItem pl={2} display="flex" flexDir="column">
+                        <Text fontSize="xl">{chat.chatName}</Text>
+                        <Text>
+                          {chat.latestMessage ? (
+                            <p>
+                              <b>{chat.latestMessage.sender.name + ": "}</b>
+                              {chat.latestMessage.content}
+                            </p>
+                          ) : (
+                            <>click to start chatting</>
+                          )}
+                        </Text>
+                      </WrapItem>
                     </Wrap>
                   ) : (
                     <Wrap>
                       <WrapItem>
                         <Avatar src={getChat(loggedUser, chat.users).pic} />
                       </WrapItem>
-                      <WrapItem>
-                        {getChat(loggedUser, chat.users).name}
+                      <WrapItem pl={2} display="flex" flexDir="column">
+                        <Text fontSize="xl">
+                          {getChat(loggedUser, chat.users).name}
+                        </Text>
+                        <Text>
+                          {/* need to work here */}
+                          {chat.latestMessage ? (
+                            <p>
+                              <b>{chat.latestMessage.sender.name + ": "}</b>
+                              {chat.latestMessage.content}
+                            </p>
+                          ) : (
+                            <>click to start chatting</>
+                          )}
+                        </Text>
                       </WrapItem>
                     </Wrap>
                   )}
