@@ -12,10 +12,6 @@ app.use(express.json());
 dotenv.config();
 ConnectDB();
 
-app.get("/", (req, res) => {
-  res.send("<h1>Active</h1>");
-});
-
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
