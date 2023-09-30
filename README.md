@@ -34,7 +34,7 @@ email: guest@mail.com
 password: 1234
 ```
 ## Project Images
-Login
+```Login```
 ![ezgif com-crop](https://github.com/rickx-x/Text-Me/assets/99482880/4068552e-8d4b-438e-a00b-87734ecdd78a)
 
 ## Contributing
